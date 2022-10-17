@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Todo app</title>
+
+    <link rel="stylesheet" href="./assets/scss/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="app.js" defer></script>
+  </head>
+  <body data-theme="light">
+    <div class="banner">
+      <img
+        src="./assets/images/bg-mobile-light.jpg"
+        alt="banner light mode mobile"
+      />
+    </div>
+    <div class="container">
+      <header class="container__header">
+        <h1 class="container__header__title">TODO</h1>
+        <div class="container__header__theme"></div>
+      </header>
+      <form class="container__input">
+        <label class="container__input__checkboxs">
+          <span class="checkmark"> </span>
+        </label>
+        <input
+          type="text"
+          id="todo"
+          autocomplete="off"
+          placeholder="Create a new todo..."
+        />
+      </form>
+      <div class="container__todos">
+        <!-- <div class="todo">
+          <label class="todo__input">
+            <input class="checkbox" type="checkbox" />
+            <span class="checkmark">
+              <img
+                class="checkmark__img"
+                src="./assets/images/icon-check.svg"
+                alt="checkmark indicator"
+              />
+            </span>
+          </label>
+          <p class="todo__content">bla bla bla bla</p>
+          <button class="todo__close" role="remove todo">
+            <img
+              src="./assets/images/icon-cross.svg"
+              alt="crose to remove the line"
+            />
+          </button>
+        </div> -->
+      </div>
+      <div class="container__footer">
+        <p><span class="items--left"></span>item left</p>
+        <div class="container__footer__filter filter">
+          <p class="filter--all">All</p>
+          <p class="filter--active">Active</p>
+          <p class="filter--completed">Completed</p>
+        </div>
+        <p class="clear-completed">Clear Completed</p>
+      </div>
+    </div>
+    <div class="trial"></div>
+    <div class="trial"></div>
+    <div class="trial"></div>
+    <div class="trial"></div>
+
+    <!-- <div class="attribution">
+      Challenge by
+      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+        >Frontend Mentor</a
+      >. Coded by <a href="#">Your Name Here</a>.
+    </div> -->
+  </body>
+</html>

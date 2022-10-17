@@ -1,0 +1,21 @@
+//---import abstracts folder
+@import 'abstracts/variables';
+@import 'abstracts/functions';
+@import 'abstracts/mixins';
+@import 'abstracts/placeholders';
+
+//---import vendors library 
+
+//---import base folder
+@import 'base/base';
+@import 'base/reset';
+
+//---import layout folder
+@import 'layout/app';
+
+
+//----import components folder
+
+//---import pages folder
+
+//---import theme folder
