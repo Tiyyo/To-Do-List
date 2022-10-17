@@ -230,16 +230,16 @@ body  {
     
 
     }
-
-
     &__content  {
         display: flex;
         flex-wrap: wrap;
 
         &[data-content=isnotactive] {
             text-decoration: line-through;
-            font-size: 5rem;
-            background-color: red;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: grey;
+
         }
     }
     button {
@@ -257,9 +257,6 @@ body  {
     }
 }
 
-.todo__content[data-content="isnotactive"] {
-    background-color: red;
-}
-.todo__content  {
-    color: red;
-}
+
+
+

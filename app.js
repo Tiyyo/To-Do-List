@@ -7,7 +7,7 @@ let allTodos = [];
 let removeTodoBtns = [];
 let checkboxs = [];
 let todoList = [];
-let todoContent = [];
+let todoContents = [];
 allTodos = document.querySelectorAll(".todo");
 removeTodoBtns = document.querySelectorAll(".todo__close");
 checkboxs = document.querySelectorAll(".checkbox");
@@ -37,9 +37,17 @@ function isChecked() {
       }
     }
   }
-  console.log(todoList);
-  console.log(checkboxs);
 }
+const isActive = () => {
+  if (todoList.length >= 1) {
+    for (i = 0; i < todoList.length - 1; i++) {
+      if (todoList[i].active === false) {
+        todoContents[i].dataset.content = "isnotactive";
+      }
+    }
+  }
+};
+
 //mark a todo as complete
 // an array of input as argument
 const markAsChecked = () => {
@@ -51,33 +59,25 @@ const markAsChecked = () => {
       } else if (checkbox.checked === false) {
         todoList[i].checked = false;
       }
-      console.log(todoList[i]);
-      // if ((todoList[i].checked = true)) {
-      //   console.log(todoList);
-      //   checkboxs[i].checked = true;
-      // }
     });
   });
 };
-const markAsActive = () => {
-  //   todoContent.forEach((checkbox) => {
-  //     checkbox.addEventListener("input", (e) => {
-  //       i = e.target.dataset.indiceCheckbox;
-  //       if ((checkbox.checked = true)) {
-  //         todoList[i].checked = true;
-  //       } else {
-  //         todoList[i].checked = false;
-  //         checkbox[i].checkbox = false;
-  //       }
-  //       // if ((todoList[i].checked = true)) {
-  //       //   console.log(todoList);
-  //       //   checkboxs[i].checked = true;
-  //       // }
-  //     });
-  //   });
-};
 
-const lineThroughtTodo = () => {};
+const markAsActive = () => {
+  todoContents.forEach((todoContent) => {
+    todoContent.addEventListener("click", (e) => {
+      i = e.target.dataset.indiceContent;
+      if (todoContent.dataset.content === "isactive") {
+        todoContent.dataset.content = "isnotactive";
+        todoList[i].active = false;
+      } else {
+        todoContent.dataset.content = "isactive";
+        todoList[i].active = true;
+      }
+      console.log(todoList);
+    });
+  });
+};
 
 // an array as argument
 const countItemLeft = (anArray) => {
@@ -115,9 +115,9 @@ const displayTodo = () => {
         />
       </span>
     </label>
-    <p class="todo__content" data-todo-content="${todoList.indexOf(todo)}">${
-        todo.content
-      }</p>
+    <p class="todo__content" data-content data-indice-content="${todoList.indexOf(
+      todo
+    )}">${todo.content}</p>
     <button class="todo__close" role="remove todo" data-delete-btn="${todoList.indexOf(
       todo
     )}">
@@ -143,13 +143,14 @@ todoValidationForm.addEventListener("submit", (e) => {
     removeTodoBtns = document.querySelectorAll(".todo__close");
     checkboxs = document.querySelectorAll(".checkbox");
     inputTodo.value = "";
-    todoContent = document.querySelectorAll(".todo__content");
+    todoContents = document.querySelectorAll(".todo__content");
   }
   store();
   markAsChecked();
   isChecked();
+  isActive();
   markAsActive();
-  lineThroughtTodo();
+  console.log(todoList);
   deleteTodo(removeTodoBtns, allTodos);
   countItemLeft(todoList);
 });

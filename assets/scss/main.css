@@ -157,12 +157,6 @@ body {
   cursor: pointer;
   background-color: transparent;
 }
-.container__input__checkboxs .checkbox {
-  opacity: 0;
-  height: 0;
-  width: 0;
-  border: 0;
-}
 .container__input__checkboxs .checkmark {
   position: absolute;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -301,6 +295,12 @@ body {
 .todo__content {
   display: flex;
   flex-wrap: wrap;
+}
+.todo__content[data-content=isnotactive] {
+  text-decoration: line-through;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: grey;
 }
 .todo button {
   border: 0;
