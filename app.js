@@ -5,14 +5,22 @@ const inputTodo = document.getElementById("todo");
 const todoValidationForm =
   document.getElementsByClassName("container__input")[0];
 const itemLeftValue = document.getElementsByClassName("items--left")[0];
+const clearCompletedBtn = document.getElementsByClassName("clear-completed")[0];
+const filterAllBtn = document.getElementsByClassName("filter--all")[0];
+const filterActive = document.getElementsByClassName("filter--active")[0];
+const filterAllCompleed =
+  document.getElementsByClassName("filter--completed")[0];
 let allTodos = [];
 let removeTodoBtns = [];
 let checkboxs = [];
 let todoList = [];
 let todoContents = [];
-allTodos = document.querySelectorAll(".todo");
-removeTodoBtns = document.querySelectorAll(".todo__close");
-checkboxs = document.querySelectorAll(".checkbox");
+let sortMethod = "NoSort";
+// allTodos = document.querySelectorAll(".todo");
+// removeTodoBtns = document.querySelectorAll(".todo__close");
+// checkboxs = document.querySelectorAll(".checkbox");
+
+console.log(clearCompletedBtn);
 
 //stored todo list
 function store() {
@@ -41,6 +49,7 @@ function isChecked() {
   }
 }
 
+// testing all cases for matching Todos object active state and the state display on screen
 const isActive = () => {
   if (todoList.length >= 1) {
     for (let i = 0; i < todoList.length - 1; i++) {
@@ -57,7 +66,6 @@ const isActive = () => {
         todoContents[i].dataset.content = "isnotactive";
       }
     }
-    console.log(todoList);
   }
 };
 
@@ -111,6 +119,45 @@ const deleteTodo = (buttons, item) => {
   });
 };
 
+const clearCompleted = () => {
+  for (let i = 0; i < todoList.length - 1; i++) {
+    if (todoList[i].checked === true) {
+      todoList[i].active = false;
+    }
+    if (todoList[i].active === false) {
+      todoContents[i].dataset.content = "isnotactive";
+    }
+  }
+};
+
+const pasEncoreDeNom = () => {
+  if (filterAll === active) {
+    active = noactive;
+    completed = noactive;
+  }
+  if (filterActive === active) {
+    all = noactive;
+    completed = noactive;
+  }
+  if (filterCompleted === active) {
+    active = noactive;
+    All = noactive;
+  }
+};
+
+let newArrFilter = todoList.filter(function (el, key) {
+  console.log(el);
+  if (el.active === true) {
+    return true;
+  }
+});
+
+let newArrFilter2 = todoList.filter(function (el, key) {
+  console.log(el);
+  if (el.active === false) {
+    return true;
+  }
+});
 // display todos
 //and assign a value to each todo which is the index's array of each todos
 const displayTodo = () => {
@@ -159,11 +206,43 @@ todoValidationForm.addEventListener("submit", (e) => {
     inputTodo.value = "";
     todoContents = document.querySelectorAll(".todo__content");
   }
-  store();
+
   markAsChecked();
   isChecked();
   markAsActive();
   isActive();
   deleteTodo(removeTodoBtns, allTodos);
-  // countItemLeft(todoList);
+  countItemLeft(todoList);
+
+  let newArrFilter = todoList.filter(function (el, key) {
+    console.log(el);
+    if (el.active === true) {
+      return true;
+    }
+  });
+
+  let newArrFilter2 = todoList.filter(function (el, key) {
+    console.log(el);
+    if (el.active === false) {
+      return true;
+    }
+  });
+  console.log(newArrFilter2);
+});
+
+clearCompletedBtn.addEventListener("click", () => {
+  clearCompleted();
+  console.log(todoList);
+});
+
+filterAllBtn.addEventListener("click", (e) => {
+  console.log(e);
+  if (!filterAllBtn.dataset.filter) {
+    filterAllBtn.setAttribute("data-filter", "active");
+    sortMethod = "NoSort";
+  } else if (filterAllBtn.dataset.filter == "active") {
+    filterAllBtn.removeAttribute("data-filter");
+  }
+  pasEncoreDeNom();
+  console.log(filterAllBtn);
 });
