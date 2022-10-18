@@ -295,6 +295,7 @@ body {
 .todo__content {
   display: flex;
   flex-wrap: wrap;
+  cursor: pointer;
 }
 .todo__content[data-content=isnotactive] {
   text-decoration: line-through;

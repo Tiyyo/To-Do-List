@@ -233,6 +233,7 @@ body  {
     &__content  {
         display: flex;
         flex-wrap: wrap;
+        cursor: pointer;
 
         &[data-content=isnotactive] {
             text-decoration: line-through;

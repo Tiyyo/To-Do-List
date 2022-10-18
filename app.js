@@ -1,3 +1,5 @@
+"use strict";
+
 const containerTodo = document.getElementsByClassName("container__todos")[0];
 const inputTodo = document.getElementById("todo");
 const todoValidationForm =
@@ -28,7 +30,7 @@ class Todo {
 // testing if todolist.checked is matching checkboxs.checked
 function isChecked() {
   if (todoList.length >= 1) {
-    for (i = 0; i < todoList.length - 1; i++) {
+    for (let i = 0; i < todoList.length - 1; i++) {
       if (checkboxs[i].checked === true) {
         todoList[i].checked = true;
       }
@@ -38,13 +40,24 @@ function isChecked() {
     }
   }
 }
+
 const isActive = () => {
   if (todoList.length >= 1) {
-    for (i = 0; i < todoList.length - 1; i++) {
+    for (let i = 0; i < todoList.length - 1; i++) {
+      if (todoContents[i].dataset.content === "isnotactive") {
+        todoList[i].active = false;
+      }
+      if (todoContents[i].dataset.content === "isactive") {
+        todoList[i].active = true;
+      }
+      if (todoList[i].active === true) {
+        todoContents[i].dataset.content = "isactive";
+      }
       if (todoList[i].active === false) {
         todoContents[i].dataset.content = "isnotactive";
       }
     }
+    console.log(todoList);
   }
 };
 
@@ -53,7 +66,7 @@ const isActive = () => {
 const markAsChecked = () => {
   checkboxs.forEach((checkbox) => {
     checkbox.addEventListener("input", (e) => {
-      i = e.target.dataset.indiceCheckbox;
+      let i = e.target.dataset.indiceCheckbox;
       if (checkbox.checked === true) {
         todoList[i].checked = true;
       } else if (checkbox.checked === false) {
@@ -66,11 +79,12 @@ const markAsChecked = () => {
 const markAsActive = () => {
   todoContents.forEach((todoContent) => {
     todoContent.addEventListener("click", (e) => {
-      i = e.target.dataset.indiceContent;
+      let i = e.target.dataset.indiceContent;
+
       if (todoContent.dataset.content === "isactive") {
         todoContent.dataset.content = "isnotactive";
         todoList[i].active = false;
-      } else {
+      } else if ((todoContent.dataset.content = "isnotactive")) {
         todoContent.dataset.content = "isactive";
         todoList[i].active = true;
       }
@@ -89,7 +103,7 @@ const countItemLeft = (anArray) => {
 const deleteTodo = (buttons, item) => {
   buttons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      i = e.composedPath()[1].dataset.deleteBtn;
+      let i = e.composedPath()[1].dataset.deleteBtn;
       item[i].remove();
       todoList.splice(i, 1);
       countItemLeft(todoList);
@@ -135,7 +149,7 @@ const displayTodo = () => {
 todoValidationForm.addEventListener("submit", (e) => {
   e.preventDefault();
   if (inputTodo.value !== "") {
-    content = inputTodo.value;
+    let content = inputTodo.value;
     let newTodo = new Todo(content, false);
     todoList.push(newTodo);
     displayTodo();
@@ -148,9 +162,8 @@ todoValidationForm.addEventListener("submit", (e) => {
   store();
   markAsChecked();
   isChecked();
-  isActive();
   markAsActive();
-  console.log(todoList);
+  isActive();
   deleteTodo(removeTodoBtns, allTodos);
-  countItemLeft(todoList);
+  // countItemLeft(todoList);
 });
