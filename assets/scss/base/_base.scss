@@ -9,6 +9,8 @@ body[data-theme="light"]  {
     --placeholder_color : hsl(236, 9%, 61%);
     --color-5 : hsl(235, 19%, 35%);
     --background_list : white;
+    --hover_footer_el : rgba(32, 30, 30, 0.8);
+    --filter_active : rgba(47,150,230,1);
 }
 
 body[data-theme="dark"]  {

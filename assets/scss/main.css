@@ -15,6 +15,8 @@ body[data-theme=light] {
   --placeholder_color: hsl(236, 9%, 61%);
   --color-5: hsl(235, 19%, 35%);
   --background_list: white;
+  --hover_footer_el: rgba(32, 30, 30, 0.8);
+  --filter_active: rgba(47,150,230,1);
 }
 
 body[data-theme=dark] {
@@ -216,6 +218,12 @@ body {
   border-bottom-right-radius: 9px;
   background-color: var(--background_list);
 }
+.container__footer .clear-completed {
+  cursor: pointer;
+}
+.container__footer .clear-completed:hover {
+  color: var(--hover_footer_el);
+}
 .container__footer__filter {
   position: absolute;
   top: 70px;
@@ -228,6 +236,11 @@ body {
   height: 50px;
   border-radius: 9px;
   background-color: var(--background_list);
+  cursor: pointer;
+}
+.container__footer__filter .filters[data-filter=active] {
+  color: var(--filter_active);
+  font-weight: 700;
 }
 
 .todo {
@@ -264,14 +277,20 @@ body {
   background-color: white;
   transition: background-color 0.15s ease-in;
 }
+.todo__input .checkmark:before {
+  content: "";
+  position: absolute;
+  background: linear-gradient(315deg, rgb(224, 48, 206) 0%, rgb(199, 73, 200) 10%, rgb(47, 170, 230) 100%);
+  border-radius: 50%;
+}
 .todo__input .checkmark__img {
   position: absolute;
-  z-index: 10;
+  z-index: -10;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 60%;
-  width: 60%;
+  height: 40%;
+  width: 40%;
 }
 .todo__input .checkmark:after {
   content: "";
@@ -296,12 +315,13 @@ body {
   display: flex;
   flex-wrap: wrap;
   cursor: pointer;
+  font-size: 1.5rem;
 }
 .todo__content[data-content=isnotactive] {
   text-decoration: line-through;
   font-style: italic;
   font-size: 1.3rem;
-  color: grey;
+  color: var(--placeholder_color);
 }
 .todo button {
   border: 0;

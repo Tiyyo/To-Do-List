@@ -7,8 +7,8 @@ const todoValidationForm =
 const itemLeftValue = document.getElementsByClassName("items--left")[0];
 const clearCompletedBtn = document.getElementsByClassName("clear-completed")[0];
 const filterAllBtn = document.getElementsByClassName("filter--all")[0];
-const filterActive = document.getElementsByClassName("filter--active")[0];
-const filterAllCompleed =
+const filterActiveBtn = document.getElementsByClassName("filter--active")[0];
+const filterCompletedBtn =
   document.getElementsByClassName("filter--completed")[0];
 let allTodos = [];
 let removeTodoBtns = [];
@@ -16,11 +16,6 @@ let checkboxs = [];
 let todoList = [];
 let todoContents = [];
 let sortMethod = "NoSort";
-// allTodos = document.querySelectorAll(".todo");
-// removeTodoBtns = document.querySelectorAll(".todo__close");
-// checkboxs = document.querySelectorAll(".checkbox");
-
-console.log(clearCompletedBtn);
 
 //stored todo list
 function store() {
@@ -103,7 +98,15 @@ const markAsActive = () => {
 
 // an array as argument
 const countItemLeft = (anArray) => {
-  itemLeftValue.textContent = `${anArray.length}` + " ";
+  let a = 0; // random var has to be a number
+  // number of todo which is have an active state
+  for (let i = 0; i < anArray.length; i++) {
+    if (anArray[i].active) {
+      a++;
+    }
+  }
+  console.log(a);
+  itemLeftValue.textContent = `${a}` + " ";
 };
 
 // an array of button as first argument
@@ -120,7 +123,7 @@ const deleteTodo = (buttons, item) => {
 };
 
 const clearCompleted = () => {
-  for (let i = 0; i < todoList.length - 1; i++) {
+  for (let i = 0; i < todoList.length; i++) {
     if (todoList[i].checked === true) {
       todoList[i].active = false;
     }
@@ -130,38 +133,72 @@ const clearCompleted = () => {
   }
 };
 
-const pasEncoreDeNom = () => {
-  if (filterAll === active) {
-    active = noactive;
-    completed = noactive;
+const controlFilterAll = () => {
+  if (filterAllBtn.dataset.filter === "active") {
+    alert("test1");
+    filterActiveBtn.removeAttribute("data-filter");
+    filterCompletedBtn.removeAttribute("data-filter");
   }
-  if (filterActive === active) {
-    all = noactive;
-    completed = noactive;
+};
+const controlFilterActive = () => {
+  if (filterActiveBtn.dataset.filter === "active") {
+    alert("test2");
+    filterAllBtn.removeAttribute("data-filter");
+    filterCompletedBtn.removeAttribute("data-filter");
   }
-  if (filterCompleted === active) {
-    active = noactive;
-    All = noactive;
+};
+const controlFilterCompleted = () => {
+  if (filterCompletedBtn.dataset.filter === "active") {
+    alert("test3");
+    filterActiveBtn.removeAttribute("data-filter");
+    filterAllBtn.removeAttribute("data-filter");
   }
 };
 
-let newArrFilter = todoList.filter(function (el, key) {
-  console.log(el);
-  if (el.active === true) {
-    return true;
+const displayFilteredElement = () => {
+  if (filterAllBtn.dataset.filter === "active") {
+    for (let i = 0; i < todoList.length; i++) {
+      if (todoList[i]) {
+        allTodos[i].style.display = "flex";
+      }
+    }
   }
-});
-
-let newArrFilter2 = todoList.filter(function (el, key) {
-  console.log(el);
-  if (el.active === false) {
-    return true;
+  if (filterActiveBtn.dataset.filter === "active") {
+    for (let i = 0; i < todoList.length; i++) {
+      if (todoList[i].active === false) {
+        allTodos[i].style.display = "none";
+      }
+      if (todoList[i].active === true) {
+        allTodos[i].style.display = "flex";
+      }
+    }
   }
-});
+  if (filterCompletedBtn.dataset.filter === "active") {
+    for (let i = 0; i < todoList.length; i++) {
+      if (todoList[i].active === true) {
+        allTodos[i].style.display = "none";
+      }
+      if (todoList[i].active === false) {
+        allTodos[i].style.display = "flex";
+      }
+    }
+  }
+};
 // display todos
 //and assign a value to each todo which is the index's array of each todos
 const displayTodo = () => {
   containerTodo.innerHTML = todoList
+    // .filter(function (todo) {
+    //   if (sortMethod === "NoSort") {
+    //     return todo;
+    //   }
+    //   if (sortMethod === "SortByActiveTodo") {
+    //     return todo.active === true;
+    //   }
+    //   if (sortMethod === "SortByCompletedTodo") {
+    //     return todo.active === false;
+    //   }
+    // })
     .map((todo) => {
       return `<div class="todo" data-todo=${todoList.indexOf(todo)}>
     <label class="todo__input">
@@ -208,41 +245,66 @@ todoValidationForm.addEventListener("submit", (e) => {
   }
 
   markAsChecked();
+  countItemLeft(todoList);
   isChecked();
   markAsActive();
+  countItemLeft(todoList);
   isActive();
   deleteTodo(removeTodoBtns, allTodos);
   countItemLeft(todoList);
-
-  let newArrFilter = todoList.filter(function (el, key) {
-    console.log(el);
-    if (el.active === true) {
-      return true;
-    }
-  });
-
-  let newArrFilter2 = todoList.filter(function (el, key) {
-    console.log(el);
-    if (el.active === false) {
-      return true;
-    }
-  });
-  console.log(newArrFilter2);
 });
 
 clearCompletedBtn.addEventListener("click", () => {
   clearCompleted();
-  console.log(todoList);
+  countItemLeft(todoList);
 });
 
-filterAllBtn.addEventListener("click", (e) => {
-  console.log(e);
+filterAllBtn.addEventListener("click", () => {
   if (!filterAllBtn.dataset.filter) {
     filterAllBtn.setAttribute("data-filter", "active");
-    sortMethod = "NoSort";
-  } else if (filterAllBtn.dataset.filter == "active") {
+    // sortMethod = "NoSort";
+  } else if (filterAllBtn.dataset.filter === "active") {
     filterAllBtn.removeAttribute("data-filter");
   }
-  pasEncoreDeNom();
-  console.log(filterAllBtn);
+  if (filterAllBtn.dataset.filter === "active") {
+    filterActiveBtn.removeAttribute("data-filter");
+    filterCompletedBtn.removeAttribute("data-filter");
+  }
+  displayFilteredElement();
+  countItemLeft(todoList);
+  console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
+});
+
+filterActiveBtn.addEventListener("click", () => {
+  if (!filterActiveBtn.dataset.filter) {
+    filterActiveBtn.setAttribute("data-filter", "active");
+    sortMethod = "SortByActiveTodo";
+  } else if (filterActiveBtn.dataset.filter === "active") {
+    filterActiveBtn.removeAttribute("data-filter");
+    filterAllBtn.setAttribute("data-filter", "active");
+  }
+  if (filterActiveBtn.dataset.filter === "active") {
+    filterAllBtn.removeAttribute("data-filter");
+    filterCompletedBtn.removeAttribute("data-filter");
+  }
+  displayFilteredElement();
+  countItemLeft(todoList);
+  console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
+});
+
+filterCompletedBtn.addEventListener("click", () => {
+  if (!filterCompletedBtn.dataset.filter) {
+    filterCompletedBtn.setAttribute("data-filter", "active");
+    sortMethod = "SortByCompletedTodo";
+  } else if (filterCompletedBtn.dataset.filter === "active") {
+    filterCompletedBtn.removeAttribute("data-filter");
+    filterAllBtn.setAttribute("data-filter", "active");
+  }
+  if (filterCompletedBtn.dataset.filter === "active") {
+    filterActiveBtn.removeAttribute("data-filter");
+    filterAllBtn.removeAttribute("data-filter");
+  }
+  displayFilteredElement();
+  countItemLeft(todoList);
+  console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
 });
