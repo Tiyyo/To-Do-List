@@ -48,16 +48,15 @@ class Todo {
 const isActive = () => {
   if (todoList.length >= 1) {
     for (let i = 0; i < todoList.length - 1; i++) {
-      if (todoContents[i].dataset.content === "isnotactive") {
-        todoList[i].active = false;
-      }
-      if (todoContents[i].dataset.content === "isactive") {
-        todoList[i].active = true;
-      }
+//      if (todoContents[i].dataset.content === "isnotactive") {
+//        todoList[i].active = false;
+//      }
+//      if (todoContents[i].dataset.content === "isactive") {
+//        todoList[i].active = true;
+//      }
       if (todoList[i].active === true) {
         todoContents[i].dataset.content = "isactive";
-      }
-      if (todoList[i].active === false) {
+     } else {
         todoContents[i].dataset.content = "isnotactive";
       }
     }
