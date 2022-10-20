@@ -4,21 +4,43 @@
 
 body[data-theme="light"]  {
     --title_color : hsl(0, 0%, 98%);
-    --color-2: hsl(236, 33%, 92%);
-    --color-3 : hsl(233, 11%, 84%);
+    --main_background: hsl(0, 0%, 98%);
+    --border_checkbox : hsl(233, 11%, 84%);
     --placeholder_color : hsl(236, 9%, 61%);
-    --color-5 : hsl(235, 19%, 35%);
     --background_list : white;
-    --hover_footer_el : rgba(32, 30, 30, 0.8);
-    --filter_active : rgba(47,150,230,1);
+    --hover_footer_el : rgba(0, 0, 0, 0.825);
+    --filter_active : hsl(220, 98%, 61%);
+    --input_text : rgba(13, 12, 12, 0.891);
+    --border_todo : rgba(0, 0, 0, 0.176);
+    --hover_checkmark : rgba(98, 97, 97, 0.122);
+    --hover_close_btn : rgba(0, 0, 0, 0.2);
+    --hover_todo :rgb(209, 214, 229);
+    --background_check_icon : #fff;
+    transition: all 0.4s;
+
+
+}
+// hsl(235, 38%, 24%); background list
+body[data-theme="dark"]  {
+    --title_color : hsl(0, 0%, 98%);
+    --main_background : hsl(235, 21%, 11%);
+    --border_checkbox : hsl(234, 13%, 42%);
+    --placeholder_color : hsl(234, 19%, 59%);
+    --background_list : hsl(235, 24%, 19%);
+    --input_text : hsl(234, 39%, 85%);
+    --border_todo : rgba(255, 255, 255, 0.176);
+    --hover_todo :rgba(75, 75, 84, 0.155);
+    --filter_active : hsl(220, 98%, 61%);
+    --background_check_icon: #262a54;
+    transition: all 0.4s;
+
+
+ background-color: var(--main_background);
+.banner {
+    background: url('../images/bg-mobile-dark.jpg') center/cover no-repeat;
 }
 
-body[data-theme="dark"]  {
- --color-1 : hsl(235, 21%, 11%);
- --color-2 : hsl(235, 24%, 19%);
- --color-3 : hsl(234, 39%, 85%);
- --color-4 : hsl(236, 33%, 92%);
- --color-5 : hsl(234, 11%, 52%);
- --color-6 : hsl(233, 14%, 35%);
- --color-7 : hsl(237, 14%, 26%);
+ .container__header__theme  {
+    background : url('../images/icon-sun.svg') center/cover no-repeat;
+ }
 };

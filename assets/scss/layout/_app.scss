@@ -5,33 +5,30 @@ html  {
 }
 
 body  {
-    position: relative;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     font-family: 'Josefin Sans', sans-serif;
     font-size: 1.8rem;
-    background-color:var(--title_color) ;
+    background-color: var(--main_background);
 }
 .banner {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: -5;
+    z-index: -10;
+    background: url('../images/bg-mobile-light.jpg') center/cover no-repeat;
+    width: 100vw;
+    height: 20vh;
 
-    & > img {
-        // display: block;
-        object-fit: cover;
-        width: 100%;
-        height: 30vh;
-    }
 }
 .container  {
     display: flex;
     align-items: center;
     flex-direction: column;
     width: 85%;
-    margin-top: 10vh;
+    margin-top: 5vh;
+
 
     &__header  {
         display: flex;
@@ -45,9 +42,9 @@ body  {
             font-weight: $bold;
         }
         &__theme  {
-            background: url('../images/icon-moon.svg') center/contain no-repeat;
-            height: 25px;
-            width:25px;
+            background: url('../images/icon-moon.svg') center/cover no-repeat;
+            height: 20px;
+            width:20px;
         }
     }
 
@@ -56,7 +53,8 @@ body  {
         height: 50px;
         border-radius: 6px;
         position: relative;
-
+        background-color: var(--background_list);
+        
         & > input[type="text"]  {
             font-family: 'Josefin Sans', sans-serif;
             height: 100%;
@@ -64,6 +62,12 @@ body  {
             border: 0;
             border-radius: inherit;
             padding-left: 50px;
+            color: var(--input_text);
+            background-color: var(--background_list);
+
+            &:focus {
+                outline: none;
+            }
 
             &::placeholder  {
                 font-size: 1.2rem;
@@ -81,75 +85,58 @@ body  {
             
             .checkmark  {
                 position: absolute;
-                border: 1px solid rgba(0, 0, 0, 0.125);
+                border: 1px solid var(--border_checkbox);
                 top: 50%;
                 transform: translateY(-50%);
                 left: 0;
                 height: 25px;
                 width: 25px;
                 border-radius: 50%;
-                background-color: white;
+                background-color: var(--background_list);
                 transition: background-color 0.15s ease-in;
-
-                &__img {
-                    
-                    position: absolute;
-                    z-index: 10;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    height: 60%;
-                    width: 60%;
-                }
-                &:after  {
-                    content: "";
-                    display: none;
-                    position: absolute;
-                    background:linear-gradient(315deg, rgba(224,48,206,1) 0%, rgba(199,73,200,1) 10%, rgba(47,170,230,1) 100%);
-                    top: 0;
-                    height: 100%;
-                    width: 100%;
-                    border-radius: 50%;
-                }
-                &:hover  {
-                    background: rgba(98, 97, 97, 0.122);
-                }
-            }
-            .checkbox:checked ~ .checkmark::after {
-                display: block;
-            }
-            .checkbox:checked ~ .checkmark__img  {
-                display: block;
             }
         }
-
     }
     &__todos  {
         
         background-color: var(--background_list);
+        color: var(--input_text);
         width: 100%;
         border-top-left-radius: 9px;
         border-top-right-radius: 9px;
         margin-top: 15px;
         display: flex;
         flex-direction: column;
+
+        &:first-child{
+            border-top-left-radius: 9px;
+            border-bottom-right-radius: 9px;
+            background-color: red;
+        }
      
     }
     &__footer  {
+        position: relative;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         width: 100%;
         padding: 15px 0;
-        position: relative;
         border-bottom-left-radius: 9px;
         border-bottom-right-radius: 9px;
         background-color: var(--background_list);
+        color: var(--placeholder_color);
+        font-size: 1.1rem;
+        box-shadow: 0px 15px 15px 7px rgba(0, 0, 0, 0.05);
 
         .clear-completed  {
             cursor: pointer;
+            margin-right: 20px;
             &:hover {
                 color: var(--hover_footer_el);
             }
+        }
+        .items  {
+            margin-left: 20px;
         }
 
 
@@ -165,10 +152,11 @@ body  {
             border-radius: 9px;
             background-color: var(--background_list);
             cursor: pointer;
+            font-weight: $bold;
+            font-size: 1.4rem;
 
             .filters[data-filter=active]{
                 color: var(--filter_active);
-                font-weight: 700;
             }
         }
 
@@ -177,14 +165,25 @@ body  {
 }
 
 .todo {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 25px 1fr 35px;
+    justify-items: start;
     align-items: center;
     padding: 10px 15px;
     column-gap: 15px;
-    position: relative;
     min-height: 40px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.176);
+    border-bottom: 1px solid var(--border_todo);
+    width: 100%;
+    transition: background-color 0.35s ;
+    background-color: var(--background_list);
+
+    &:hover {
+        background-color: var;
+
+        & > button {
+            opacity: 1;
+        }
+    }
 
     &__input  {
 
@@ -201,14 +200,14 @@ body  {
         
         .checkmark  {
             position: absolute;
-            border: 1px solid rgba(0, 0, 0, 0.125);
+            border: 1px solid var(--border_checkbox);
             top: 50%;
             transform: translateY(-50%);
             left: 0;
             height: 25px;
             width: 25px;
             border-radius: 50%;
-            background-color: white;
+            background-color: var(--background-list);
             transition: background-color 0.15s ease-in;
 
             &:before {
@@ -220,15 +219,15 @@ body  {
                 border-radius: 50%;
             }
     
-            &__img {
-                
+            & > svg{
                 position: absolute;
-                z-index: -10;
+                opacity: 0;
+                z-index: 1;
                 top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                height: 40%;
-                width: 40%;
+                left: 45%;
+                transform: translate(-45%, -50%);
+                height: 45%;
+                width: 45%;
             }
             &:after  {
                 content: "";
@@ -241,14 +240,14 @@ body  {
                 border-radius: 50%;
             }
             &:hover  {
-                background: rgba(98, 97, 97, 0.122);
+                background: var(--hover_checkmark);
             }
         }
         .checkbox:checked ~ .checkmark::after {
             display: block;
         }
-        .checkbox:checked ~ .checkmark__img  {
-            display: block;
+        .checkbox:checked ~ .checkmark > svg  {
+            opacity: 1;
         }
     
 
@@ -257,31 +256,51 @@ body  {
         display: flex;
         flex-wrap: wrap;
         cursor: pointer;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
 
         &[data-content=isnotactive] {
             text-decoration: line-through;
             font-style: italic;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--placeholder_color);
 
         }
     }
     button {
+        opacity: 0;
         border: 0;
         border-radius: 50%;
         background-color: transparent;
-        // position: absolute;
-        // top: 50%;
-        // right: 15px;
+        justify-self: end;
         height: 25px;
         width: 25px;
+        transition: opacity 0.350s ;
+
+        & > img {
+            width: 100%;
+            object-position: center;
+            object-fit: cover;
+            cursor: pointer;
+        }
         &:hover  {
-            background-color: rgba(98, 97, 97, 0.122);
+           transform: scale(1);
+           animation: rotateCross 1s 100ms forwards;
+
+
+           @keyframes rotateCross {
+            0% {
+                transform: scale(1) rotate(0)
+            
+            }
+            100% {
+                transform: scale(1.7) rotate(180deg);
+            }
+            
+           }
+           
         }
     }
 }
-
 
 
 
