@@ -289,7 +289,7 @@ clearCompletedBtn.addEventListener("click", () => {
   displayTodo();
   countItemLeft(todoList);
   for ( let i = 0; i < todoList.length ; i++ ) {
-    if ( todoContents[i] === "isnotactive ) {
+    if ( todoContents[i] === "isnotactive" ) {
         todoContents[i].remove()
         }
   }
