@@ -18,9 +18,10 @@ let todoContents = [];
 let sortMethod = "NoSort";
 let contentToDel = "";
 
-// function store() {
-//   localStorage.todoList = JSON.stringify;
-// }
+ function store() {
+   localStorage.todoList = JSON.stringify;
+   localStorage.setItem("todoList", JSON.stringify(todoList));
+ }
 
 class Todo {
   constructor(content, checked, active) {
@@ -250,6 +251,7 @@ todoValidationForm.addEventListener("submit", (e) => {
   isActive();
   // deleteTodo(removeTodoBtns, allTodos);
   countItemLeft(todoList);
+  store();
 });
 
 window.document.body.addEventListener("click", (e) => {
@@ -268,6 +270,7 @@ window.document.body.addEventListener("click", (e) => {
     console.log(todoList);
     console.log(todoContents);
   }
+  store()
 });
 
 window.document.body.addEventListener("click", (e) => {
@@ -281,6 +284,7 @@ window.document.body.addEventListener("click", (e) => {
     }
     displayTodo();
     countItemLeft(todoList);
+    store()
   }
 });
 
@@ -304,6 +308,7 @@ clearCompletedBtn.addEventListener("click", () => {
   todoList = newArr;
   sortMethod = "NoSort";
   isActive();
+  store()
 });
 
 filterAllBtn.addEventListener("click", () => {
