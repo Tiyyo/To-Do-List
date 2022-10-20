@@ -288,6 +288,11 @@ clearCompletedBtn.addEventListener("click", () => {
   clearCompleted();
   displayTodo();
   countItemLeft(todoList);
+  for ( let i = 0; i < todoList.length ; i++ ) {
+    if ( todoContents[i] === "isnotactive ) {
+        todoContents[i].remove()
+        }
+  }
   let newArr = todoList.filter(function (todo) {
     if (sortMethod === "NoSort") {
       return todo;
