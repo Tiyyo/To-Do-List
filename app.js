@@ -18,9 +18,10 @@ let todoContents = [];
 let sortMethod = "NoSort";
 let contentToDel = "";
 
-// function store() {
-//   localStorage.todoList = JSON.stringify;
-// }
+ function store() {
+   localStorage.todoList = JSON.stringify;
+   localStorage.setItem("todoList", JSON.stringify(todoList));
+ }
 
 class Todo {
   constructor(content, checked, active) {
@@ -48,16 +49,15 @@ class Todo {
 const isActive = () => {
   if (todoList.length >= 1) {
     for (let i = 0; i < todoList.length - 1; i++) {
-      if (todoContents[i].dataset.content === "isnotactive") {
-        todoList[i].active = false;
-      }
-      if (todoContents[i].dataset.content === "isactive") {
-        todoList[i].active = true;
-      }
+//      if (todoContents[i].dataset.content === "isnotactive") {
+//        todoList[i].active = false;
+//      }
+//      if (todoContents[i].dataset.content === "isactive") {
+//        todoList[i].active = true;
+//      }
       if (todoList[i].active === true) {
         todoContents[i].dataset.content = "isactive";
-      }
-      if (todoList[i].active === false) {
+     } else {
         todoContents[i].dataset.content = "isnotactive";
       }
     }
@@ -251,6 +251,7 @@ todoValidationForm.addEventListener("submit", (e) => {
   isActive();
   // deleteTodo(removeTodoBtns, allTodos);
   countItemLeft(todoList);
+  store();
 });
 
 window.document.body.addEventListener("click", (e) => {
@@ -269,6 +270,7 @@ window.document.body.addEventListener("click", (e) => {
     console.log(todoList);
     console.log(todoContents);
   }
+  store()
 });
 
 window.document.body.addEventListener("click", (e) => {
@@ -282,6 +284,7 @@ window.document.body.addEventListener("click", (e) => {
     }
     displayTodo();
     countItemLeft(todoList);
+    store()
   }
 });
 
@@ -289,6 +292,11 @@ clearCompletedBtn.addEventListener("click", () => {
   clearCompleted();
   displayTodo();
   countItemLeft(todoList);
+  for ( let i = 0; i < todoList.length ; i++ ) {
+    if ( todoContents[i].dataset.content === "isnotactive" ) {
+        todoContents[i].remove()
+        }
+  }
   let newArr = todoList.filter(function (todo) {
     if (sortMethod === "NoSort") {
       return todo;
@@ -300,6 +308,7 @@ clearCompletedBtn.addEventListener("click", () => {
   todoList = newArr;
   sortMethod = "NoSort";
   isActive();
+  store()
 });
 
 filterAllBtn.addEventListener("click", () => {
