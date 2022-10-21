@@ -10,26 +10,168 @@ const filterAllBtn = document.getElementsByClassName("filter--all")[0];
 const filterActiveBtn = document.getElementsByClassName("filter--active")[0];
 const filterCompletedBtn =
   document.getElementsByClassName("filter--completed")[0];
+
+class Storage {
+  static store() {
+    let storage = localStorage.setItem("todoList", JSON.stringify(todoList));
+    return storage;
+  }
+  static restore() {
+    let restored =
+      localStorage.getItem("todoList") === null
+        ? []
+        : JSON.parse(localStorage.getItem("todoList"));
+    return restored;
+  }
+}
+
 let allTodos = [];
 let removeTodoBtns = [];
 let checkboxs = [];
-let todoList = [];
+let todoList = Storage.restore();
 let todoContents = [];
 let sortMethod = "NoSort";
 let contentToDel = "";
 
- function store() {
-   localStorage.todoList = JSON.stringify;
-   localStorage.setItem("todoList", JSON.stringify(todoList));
- }
+allTodos = document.querySelectorAll(".todo");
+removeTodoBtns = document.querySelectorAll(".todo__close");
+checkboxs = document.querySelectorAll(".checkbox");
+inputTodo.value = "";
+todoContents = document.querySelectorAll(".todo__content");
 
 class Todo {
-  constructor(content, checked, active) {
+  constructor(id, content, checked, active) {
+    this.id = id;
     this.content = content;
     this.checked = false;
     this.active = true;
   }
 }
+
+class UI {
+  static displayTodo() {
+    let displayTodo = todoList
+      .filter(function (todo) {
+        if (sortMethod === "NoSort") {
+          return todo;
+        }
+        if (sortMethod === "ClearCompleted") {
+          return todo.active === true;
+        }
+      })
+      .map((todo) => {
+        return `<div class="todo" data-todo=${todoList.indexOf(todo)}>
+      <label class="todo__input">
+      <input class="checkbox" type="checkbox" data-indice-checkbox="${todoList.indexOf(
+        todo
+      )}"/>
+        <span class="checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>
+        </span>
+        </label>
+        <p class="todo__content" data-content="isactive" data-indice-content="${todoList.indexOf(
+          todo
+        )}">${todo.content}</p>
+          <button class="todo__close" role="remove todo" data-delete-btn="${todoList.indexOf(
+            todo
+          )}">
+      <img
+      src="./assets/images/icon-cross.svg"
+      alt="crose to remove the line"
+      />
+      </button>
+      </div>
+      `;
+      });
+
+    containerTodo.innerHTML = displayTodo.join("");
+  }
+  static clearInput() {
+    return (inputTodo.value = "");
+  }
+  static counterItemsLeft() {
+    let a = 0; // random var has to be a number
+    // number of todo which is have an active state
+    for (let i = 0; i < todoList.length; i++) {
+      if (todoList[i].active) {
+        a++;
+      }
+    }
+    return (itemLeftValue.textContent = `${a}` + " ");
+  }
+  static deleteTodo() {
+    window.document.body.addEventListener("click", (e) => {
+      if (e.target.tagName === "IMG") {
+        contentToDel = e.composedPath()[2].children[1].textContent;
+        for (let i = 0; i < todoList.length; i++) {
+          if (todoList[i].content === contentToDel) {
+            todoList.splice(i, 1);
+          }
+        }
+        e.composedPath()[2].remove();
+        this.counterItemsLeft();
+      }
+    });
+    Storage.store(todoList);
+  }
+  static markAsCompleted() {
+    // window.document.body.addEventListener("click", (e) => {
+    //   if (e.target.className === "checkbox") {
+    //     let i = e.target.dataset.indiceCheckbox;
+    //     alert("test");
+    //     console.log(allTodos);
+    //     console.log(checkboxs);
+    //     console.log(document.querySelectorAll("todo__content"));
+    // if (todoList[i].checked === false) {
+    //   todoList[i].checked = true;
+    //   todoList[i].active = false;
+    //   todoContents[i].dataset.content = "isnotactive";
+    // } else {
+    //   todoList[i].checked = false;
+    //   todoList[i].active = true;
+    //   todoContents[i].dataset.content = "isactive";
+    // }
+  }
+}
+
+const mark = () => {
+  window.document.body.addEventListener("click", (e) => {
+    if (e.target.className === "checkbox") {
+      // let i = e.target.dataset.indiceCheckbox;
+      console.log(document.body.children[1].children[2]);
+      console.log(todoContents);
+    }
+  });
+};
+
+window.addEventListener("load", () => {
+  UI.displayTodo();
+  UI.markAsCompleted();
+  // mark();
+  UI.deleteTodo();
+  UI.counterItemsLeft();
+  todoContents = document.querySelectorAll(".todo__content");
+  mark();
+});
+
+todoValidationForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let id = Math.random() * 1000;
+  if (inputTodo.value !== "") {
+    inputTodo.value;
+    let newTodo = new Todo(id, inputTodo.value, false, true);
+    todoList.push(newTodo);
+    UI.displayTodo();
+    todoContents = document.querySelectorAll(".todo__content");
+    UI.clearInput();
+    UI.markAsCompleted();
+    mark();
+    UI.deleteTodo();
+    UI.counterItemsLeft();
+    Storage.store(todoList);
+    console.log(todoContents);
+  }
+});
 
 // testing if todolist.checked is matching checkboxs.checked
 // function isChecked() {
@@ -46,23 +188,24 @@ class Todo {
 // }
 
 // testing all cases for matching Todos object active state and the state display on screen
-const isActive = () => {
-  if (todoList.length >= 1) {
-    for (let i = 0; i < todoList.length - 1; i++) {
-//      if (todoContents[i].dataset.content === "isnotactive") {
-//        todoList[i].active = false;
-//      }
-//      if (todoContents[i].dataset.content === "isactive") {
-//        todoList[i].active = true;
-//      }
-      if (todoList[i].active === true) {
-        todoContents[i].dataset.content = "isactive";
-     } else {
-        todoContents[i].dataset.content = "isnotactive";
-      }
-    }
-  }
-};
+// const isActive = () => {
+//   if (todoList.length >= 1) {
+//     for (let i = 0; i < todoList.length - 1; i++) {
+//       if (todoContents[i].dataset.content === "isnotactive") {
+//         todoList[i].active = false;
+//       }
+//       if (todoContents[i].dataset.content === "isactive") {
+//         todoList[i].active = true;
+//       }
+//       if (todoList[i].active === true) {
+//         todoContents[i].dataset.content = "isactive";
+//       }
+//       if (todoList[i].active === false) {
+//         todoContents[i].dataset.content = "isnotactive";
+//       }
+//     }
+//   }
+// };
 
 //mark a todo as complete
 // an array of input as argument
@@ -96,16 +239,16 @@ const isActive = () => {
 // };
 
 // an array as argument
-const countItemLeft = (anArray) => {
-  let a = 0; // random var has to be a number
-  // number of todo which is have an active state
-  for (let i = 0; i < anArray.length; i++) {
-    if (anArray[i].active) {
-      a++;
-    }
-  }
-  itemLeftValue.textContent = `${a}` + " ";
-};
+// const countItemLeft = (anArray) => {
+//   let a = 0; // random var has to be a number
+//   // number of todo which is have an active state
+//   for (let i = 0; i < anArray.length; i++) {
+//     if (anArray[i].active) {
+//       a++;
+//     }
+//   }
+//   itemLeftValue.textContent = `${a}` + " ";
+// };
 
 // an array of button as first argument
 // an array of element to delete as second argument
@@ -124,9 +267,9 @@ const countItemLeft = (anArray) => {
 //   });
 // };
 
-const clearCompleted = () => {
-  return (sortMethod = "ClearCompleted");
-};
+// const clearCompleted = () => {
+//   return (sortMethod = "ClearCompleted");
+// };
 
 // const controlFilterAll = () => {
 //   if (filterAllBtn.dataset.filter === "active") {
@@ -150,73 +293,73 @@ const clearCompleted = () => {
 //   }
 // };
 
-const displayFilteredElement = () => {
-  if (filterAllBtn.dataset.filter === "active") {
-    for (let i = 0; i < todoList.length; i++) {
-      if (todoList[i]) {
-        allTodos[i].style.display = "grid";
-      }
-    }
-  }
-  if (filterActiveBtn.dataset.filter === "active") {
-    for (let i = 0; i < todoList.length; i++) {
-      if (todoList[i].active === false) {
-        allTodos[i].style.display = "none";
-      }
-      if (todoList[i].active === true) {
-        allTodos[i].style.display = "grid";
-      }
-    }
-  }
-  if (filterCompletedBtn.dataset.filter === "active") {
-    for (let i = 0; i < todoList.length; i++) {
-      if (todoList[i].active === true) {
-        allTodos[i].style.display = "none";
-      }
-      if (todoList[i].active === false) {
-        allTodos[i].style.display = "grid";
-      }
-    }
-  }
-};
+// const displayFilteredElement = () => {
+//   if (filterAllBtn.dataset.filter === "active") {
+//     for (let i = 0; i < todoList.length; i++) {
+//       if (todoList[i]) {
+//         allTodos[i].style.display = "grid";
+//       }
+//     }
+//   }
+//   if (filterActiveBtn.dataset.filter === "active") {
+//     for (let i = 0; i < todoList.length; i++) {
+//       if (todoList[i].active === false) {
+//         allTodos[i].style.display = "none";
+//       }
+//       if (todoList[i].active === true) {
+//         allTodos[i].style.display = "grid";
+//       }
+//     }
+//   }
+//   if (filterCompletedBtn.dataset.filter === "active") {
+//     for (let i = 0; i < todoList.length; i++) {
+//       if (todoList[i].active === true) {
+//         allTodos[i].style.display = "none";
+//       }
+//       if (todoList[i].active === false) {
+//         allTodos[i].style.display = "grid";
+//       }
+//     }
+//   }
+// };
 // display todos
 //and assign a value to each todo which is the index's array of each todos
-const displayTodo = () => {
-  containerTodo.innerHTML = todoList
-    .filter(function (todo) {
-      if (sortMethod === "NoSort") {
-        return todo;
-      }
-      if (sortMethod === "ClearCompleted") {
-        return todo.active === true;
-      }
-    })
-    .map((todo) => {
-      return `<div class="todo" data-todo=${todoList.indexOf(todo)}>
-    <label class="todo__input">
-      <input class="checkbox" type="checkbox" data-indice-checkbox="${todoList.indexOf(
-        todo
-      )}"/>
-      <span class="checkmark">
-      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>
-      </span>
-    </label>
-    <p class="todo__content" data-content data-indice-content="${todoList.indexOf(
-      todo
-    )}">${todo.content}</p>
-    <button class="todo__close" role="remove todo" data-delete-btn="${todoList.indexOf(
-      todo
-    )}">
-      <img
-        src="./assets/images/icon-cross.svg"
-        alt="crose to remove the line"
-      />
-    </button>
-  </div>
-    `;
-    })
-    .join("");
-};
+// const displayTodo = () => {
+//   containerTodo.innerHTML = todoList
+//     .filter(function (todo) {
+//       if (sortMethod === "NoSort") {
+//         return todo;
+//       }
+//       if (sortMethod === "ClearCompleted") {
+//         return todo.active === true;
+//       }
+//     })
+//     .map((todo) => {
+//       return `<div class="todo" data-todo=${todoList.indexOf(todo)}>
+//     <label class="todo__input">
+//       <input class="checkbox" type="checkbox" data-indice-checkbox="${todoList.indexOf(
+//         todo
+//       )}"/>
+//       <span class="checkmark">
+//       <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>
+//       </span>
+//     </label>
+//     <p class="todo__content" data-content="isactive" data-indice-content="${todoList.indexOf(
+//       todo
+//     )}">${todo.content}</p>
+//     <button class="todo__close" role="remove todo" data-delete-btn="${todoList.indexOf(
+//       todo
+//     )}">
+//       <img
+//         src="./assets/images/icon-cross.svg"
+//         alt="crose to remove the line"
+//       />
+//     </button>
+//   </div>
+//     `;
+//     })
+//     .join("");
+// };
 
 //theme switcher
 themeBtn.addEventListener("click", () => {
@@ -228,132 +371,104 @@ themeBtn.addEventListener("click", () => {
   console.log(document.body.dataset);
 });
 
-todoValidationForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  todoContents = document.querySelectorAll(".todo__content");
-  if (inputTodo.value !== "") {
-    let content = inputTodo.value;
-    let newTodo = new Todo(content, false);
-    todoList.push(newTodo);
-  }
-  displayTodo();
-  allTodos = document.querySelectorAll(".todo");
-  removeTodoBtns = document.querySelectorAll(".todo__close");
-  checkboxs = document.querySelectorAll(".checkbox");
-  inputTodo.value = "";
-  todoContents = document.querySelectorAll(".todo__content");
+// todoValidationForm.addEventListener("submit", (e) => {
+//   e.preventDefault();
+//   todoContents = document.querySelectorAll(".todo__content");
+//   if (inputTodo.value !== "") {
+//     let content = inputTodo.value;
+//     let newTodo = new Todo(content, false);
+//     todoList.push(newTodo);
+//   }
+//   displayTodo();
 
-  // markAsChecked();
-  // countItemLeft(todoList);
-  // // isChecked();
-  // // markAsActive();
-  // countItemLeft(todoList);
-  isActive();
-  // deleteTodo(removeTodoBtns, allTodos);
-  countItemLeft(todoList);
-  store();
-});
+//   allTodos = document.querySelectorAll(".todo");
+//   removeTodoBtns = document.querySelectorAll(".todo__close");
+//   checkboxs = document.querySelectorAll(".checkbox");
+//   inputTodo.value = "";
+//   todoContents = document.querySelectorAll(".todo__content");
 
-window.document.body.addEventListener("click", (e) => {
-  console.log(e.target);
-  if (e.target.className === "checkbox") {
-    let i = e.target.dataset.indiceCheckbox;
-    if (todoList[i].checked === false) {
-      todoList[i].checked = true;
-      todoList[i].active = false;
-      todoContents[i].dataset.content = "isnotactive";
-    } else {
-      todoList[i].checked = false;
-      todoList[i].active = true;
-      todoContents[i].dataset.content = "isactive";
-    }
-    console.log(todoList);
-    console.log(todoContents);
-  }
-  store()
-});
+//   for (let i = 0; i < todoList.length; i++) {
+//     if (todoList[i].active === false) {
+//       todoContents[i].dataset.content = "isnotactive";
+//     }
+//   }
 
-window.document.body.addEventListener("click", (e) => {
-  if (e.target.tagName === "IMG") {
-    contentToDel = e.composedPath()[2].children[1].textContent;
-    for (let i = 0; i < todoList.length; i++) {
-      if (todoList[i].content === contentToDel) {
-        console.log(todoList[i].content);
-        todoList.splice(i, 1);
-      }
-    }
-    displayTodo();
-    countItemLeft(todoList);
-    store()
-  }
-});
+//   console.log(todoList);
+//   console.log(todoContents);
+//   // markAsChecked();
+//   // countItemLeft(todoList);
+//   // // isChecked();
+//   // // markAsActive();
+//   // countItemLeft(todoList);
+//   // isActive();
+//   // deleteTodo(removeTodoBtns, allTodos);
+//   // countItemLeft(todoList);
+// });
 
-clearCompletedBtn.addEventListener("click", () => {
-  clearCompleted();
-  displayTodo();
-  countItemLeft(todoList);
-  for ( let i = 0; i < todoList.length ; i++ ) {
-    if ( todoContents[i].dataset.content === "isnotactive" ) {
-        todoContents[i].remove()
-        }
-  }
-  let newArr = todoList.filter(function (todo) {
-    if (sortMethod === "NoSort") {
-      return todo;
-    }
-    if (sortMethod === "ClearCompleted") {
-      return todo.active === true;
-    }
-  });
-  todoList = newArr;
-  sortMethod = "NoSort";
-  isActive();
-  store()
-});
+// // checkced and mark as completed
+// window.document.body.addEventListener("click", (e) => {
+//   if (e.target.className === "checkbox") {
+//     let i = e.target.dataset.indiceCheckbox;
+//     console.log(i);
+//     console.log(todoList);
+//     console.log(todoContents);
+//     if (todoList[i].checked === false) {
+//       todoList[i].checked = true;
+//       todoList[i].active = false;
+//       todoContents[i].dataset.content = "isnotactive";
+//     } else {
+//       todoList[i].checked = false;
+//       todoList[i].active = true;
+//       todoContents[i].dataset.content = "isactive";
+//     }
+//   }
+// });
 
-filterAllBtn.addEventListener("click", () => {
-  if (!filterAllBtn.dataset.filter) {
-    filterAllBtn.setAttribute("data-filter", "active");
-  } else if (filterAllBtn.dataset.filter === "active") {
-    filterAllBtn.removeAttribute("data-filter");
-  }
-  if (filterAllBtn.dataset.filter === "active") {
-    filterActiveBtn.removeAttribute("data-filter");
-    filterCompletedBtn.removeAttribute("data-filter");
-  }
-  displayFilteredElement();
-  countItemLeft(todoList);
-  console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
-});
+// clearCompletedBtn.addEventListener("click", () => {});
 
-filterActiveBtn.addEventListener("click", () => {
-  if (!filterActiveBtn.dataset.filter) {
-    filterActiveBtn.setAttribute("data-filter", "active");
-  } else if (filterActiveBtn.dataset.filter === "active") {
-    filterActiveBtn.removeAttribute("data-filter");
-    filterAllBtn.setAttribute("data-filter", "active");
-  }
-  if (filterActiveBtn.dataset.filter === "active") {
-    filterAllBtn.removeAttribute("data-filter");
-    filterCompletedBtn.removeAttribute("data-filter");
-  }
-  displayFilteredElement();
-  countItemLeft(todoList);
-  console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
-});
+// filterAllBtn.addEventListener("click", () => {
+//   if (!filterAllBtn.dataset.filter) {
+//     filterAllBtn.setAttribute("data-filter", "active");
+//   } else if (filterAllBtn.dataset.filter === "active") {
+//     filterAllBtn.removeAttribute("data-filter");
+//   }
+//   if (filterAllBtn.dataset.filter === "active") {
+//     filterActiveBtn.removeAttribute("data-filter");
+//     filterCompletedBtn.removeAttribute("data-filter");
+//   }
+//   displayFilteredElement();
+//   countItemLeft(todoList);
+//   console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
+// });
 
-filterCompletedBtn.addEventListener("click", () => {
-  if (!filterCompletedBtn.dataset.filter) {
-    filterCompletedBtn.setAttribute("data-filter", "active");
-  } else if (filterCompletedBtn.dataset.filter === "active") {
-    filterCompletedBtn.removeAttribute("data-filter");
-    filterAllBtn.setAttribute("data-filter", "active");
-  }
-  if (filterCompletedBtn.dataset.filter === "active") {
-    filterActiveBtn.removeAttribute("data-filter");
-    filterAllBtn.removeAttribute("data-filter");
-  }
-  displayFilteredElement();
-  countItemLeft(todoList);
-  console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
-});
+// filterActiveBtn.addEventListener("click", () => {
+//   if (!filterActiveBtn.dataset.filter) {
+//     filterActiveBtn.setAttribute("data-filter", "active");
+//   } else if (filterActiveBtn.dataset.filter === "active") {
+//     filterActiveBtn.removeAttribute("data-filter");
+//     filterAllBtn.setAttribute("data-filter", "active");
+//   }
+//   if (filterActiveBtn.dataset.filter === "active") {
+//     filterAllBtn.removeAttribute("data-filter");
+//     filterCompletedBtn.removeAttribute("data-filter");
+//   }
+//   displayFilteredElement();
+//   countItemLeft(todoList);
+//   console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
+// });
+
+// filterCompletedBtn.addEventListener("click", () => {
+//   if (!filterCompletedBtn.dataset.filter) {
+//     filterCompletedBtn.setAttribute("data-filter", "active");
+//   } else if (filterCompletedBtn.dataset.filter === "active") {
+//     filterCompletedBtn.removeAttribute("data-filter");
+//     filterAllBtn.setAttribute("data-filter", "active");
+//   }
+//   if (filterCompletedBtn.dataset.filter === "active") {
+//     filterActiveBtn.removeAttribute("data-filter");
+//     filterAllBtn.removeAttribute("data-filter");
+//   }
+//   displayFilteredElement();
+//   countItemLeft(todoList);
+//   console.log(filterAllBtn, filterActiveBtn, filterCompletedBtn);
+// })
