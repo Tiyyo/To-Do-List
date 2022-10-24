@@ -21,6 +21,10 @@ body  {
     width: 100vw;
     height: 20vh;
 
+    @include respond-to ('medium') {
+        background: url('../images/bg-desktop-light.jpg') center/cover no-repeat;
+    }
+
 }
 .container  {
     display: flex;

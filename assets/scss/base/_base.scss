@@ -38,6 +38,10 @@ body[data-theme="dark"]  {
  background-color: var(--main_background);
 .banner {
     background: url('../images/bg-mobile-dark.jpg') center/cover no-repeat;
+
+    @include respond-to ('medium') {
+        background: url('../images/bg-desktop-dark.jpg') center/cover no-repeat;
+    }
 }
 
  .container__header__theme  {

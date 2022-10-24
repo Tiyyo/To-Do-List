@@ -42,6 +42,11 @@ body[data-theme=dark] {
 body[data-theme=dark] .banner {
   background: url("../images/bg-mobile-dark.jpg") center/cover no-repeat;
 }
+@media (min-width: 768px) {
+  body[data-theme=dark] .banner {
+    background: url("../images/bg-desktop-dark.jpg") center/cover no-repeat;
+  }
+}
 body[data-theme=dark] .container__header__theme {
   background: url("../images/icon-sun.svg") center/cover no-repeat;
 }
@@ -111,6 +116,11 @@ body {
   background: url("../images/bg-mobile-light.jpg") center/cover no-repeat;
   width: 100vw;
   height: 20vh;
+}
+@media (min-width: 768px) {
+  .banner {
+    background: url("../images/bg-desktop-light.jpg") center/cover no-repeat;
+  }
 }
 
 .container {
